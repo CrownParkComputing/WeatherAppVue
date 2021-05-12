@@ -26,7 +26,7 @@ export default new Vuex.Store({
           mode: 'xml, html'
       },
       headers: {
-      'x-rapidapi-key': '8f827328f7msha2e6fb055392147p12923djsn48da203c9552',
+      'x-rapidapi-key': '',
       'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com'
       },
     } 
