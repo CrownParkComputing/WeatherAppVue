@@ -5,32 +5,74 @@ import axios from "axios"
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
-    weather:{},
-    description: 'Test'
+    
+    weather:{
+      description:'',
+      main:'',
+      icon:''  
+    },
+
+    options : {
+      method: 'GET',
+      url: 'https://community-open-weather-map.p.rapidapi.com/weather',
+      params: {
+          q: 'Chester, UK',
+          lat: '',
+          lon: '',
+          callback: '',
+          id: '',
+          lang: 'null',
+          units: '"metric" or "imperial"',
+          mode: 'xml, html'
+      },
+      headers: {
+      'x-rapidapi-key': '8f827328f7msha2e6fb055392147p12923djsn48da203c9552',
+      'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com'
+      },
+    } 
+
   },
   getters: {
     returnWeather: state => {
       return state.weather;
     },
-    returnWeatherDescription: state => {
-        return state.description
-    }
 
-  },    
+    returnWeatherIcon: state => {
+      return "http://openweathermap.org/img/w/" + state.weather.icon + ".png";
+    },
+
+    lookupCity: state => {
+      return state.options.params.q;
+    },
+
+    returnQuery: state => {
+      return state.options;
+    },
+
+  },
+
   mutations: {
     SET_DATA(state, payload) {
-      state.weather = payload
-      state.description = payload.weather[0].description;
+      state.weather = payload.weather[0]
+    },
+
+    SET_LOOKUP_CITY(state, city) {
+      state.options.params.q = city
     },
 
   },
 
   actions: {
-    async newWeather({ commit }, options) {
-      return axios.request(options)
+    async newWeather({ commit }, query) {
+      return axios.request(query)
       .then(res => {
         commit('SET_DATA', res.data)
       })
-    }   
-  }
+    },
+    
+    setLookupCity({ commit }, newValue){
+      commit("SET_LOOKUP_CITY", newValue)
+    },
+
+    }
 });
